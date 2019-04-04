@@ -1,0 +1,22 @@
+{"1.1.0",
+[{<<"cowboy">>,
+  {git,"git://github.com/ninenines/cowboy",
+       {ref,"d5489b4c7360ebcb134db892fac50a2d7d406402"}},
+  0},
+ {<<"cowlib">>,
+  {git,"https://github.com/ninenines/cowlib",
+       {ref,"ad005b7d96441826a6fad1f6473ce69d11f53ca4"}},
+  1},
+ {<<"goldrush">>,{pkg,<<"goldrush">>,<<"0.1.9">>},1},
+ {<<"lager">>,
+  {git,"git://github.com/erlang-lager/lager",
+       {ref,"94f4cd5d4a6797727bee49e86ab1c1f60a039389"}},
+  0},
+ {<<"ranch">>,
+  {git,"https://github.com/ninenines/ranch",
+       {ref,"3190aef88aea04d6dce8545fe9b4574288903f44"}},
+  1}]}.
+[
+{pkg_hash,[
+ {<<"goldrush">>, <<"F06E5D5F1277DA5C413E84D5A2924174182FB108DABB39D5EC548B27424CD106">>}]}
+].

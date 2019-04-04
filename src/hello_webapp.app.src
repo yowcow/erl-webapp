@@ -1,0 +1,17 @@
+{application, hello_webapp,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {hello_webapp_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    cowboy,
+    lager
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
