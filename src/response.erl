@@ -5,7 +5,7 @@
     html/3
 ]).
 
-json(Req0, State, Data) ->
+json({Req0, State}, Cookies, Data) ->
     Json = jsone:encode(Data),
     Req = cowboy_req:reply(
         200,
@@ -13,11 +13,11 @@ json(Req0, State, Data) ->
             <<"content-type">> => <<"application/json; charset=utf-8">>
         },
         Json,
-        Req0
+        session:set_session(Req0, Cookies)
     ),
     {ok, Req, State}.
 
-html(Req0, State, {File, Data}) ->
+html({Req0, State}, Cookies, {File, Data}) ->
     Html = template:render(File, Data),
     Req = cowboy_req:reply(
         200,
@@ -25,6 +25,6 @@ html(Req0, State, {File, Data}) ->
             <<"content-type">> => <<"text/html; charset=utf-8">>
         },
         Html,
-        Req0
+        session:set_session(Req0, Cookies)
     ),
     {ok, Req, State}.
