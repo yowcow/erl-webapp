@@ -4,15 +4,12 @@
     init/2
 ]).
 
-init(Req0, State) ->
-    lager:warning("Got a request for greetings"),
-    Req = cowboy_req:reply(
-        200,
-        #{
-            <<"content-type">> => <<"text/plain">>,
-            <<"x-hoge-fuga">>  => <<"HOGE/FUGA">>
-        },
-        <<"Hello from Erlang">>,
-        Req0
-    ),
-    {ok, Req, State}.
+init(#{ bindings := Bindings } = Req0, State) ->
+    RemoteAddr = list_to_binary(request:remote_addr(Req0)),
+    Format = maps:get(format, Bindings),
+    case Format of
+        <<"json">> ->
+            response:json(Req0, State, #{ remote_addr => RemoteAddr });
+        _ ->
+            response:html(Req0, State, {"hello.html", #{ "remote_addr" => RemoteAddr }})
+    end.
