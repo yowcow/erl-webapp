@@ -6,6 +6,7 @@
 ]).
 
 -define(COOKIE_NAME, <<"sess">>).
+-define(STRETCHES, 10).
 -define(PRIVATE_TOKEN, <<"HOGEHOGE-hogehoge">>). % should not be present.
 
 bin2hex(Bin) ->
@@ -13,7 +14,7 @@ bin2hex(Bin) ->
     list_to_binary(string:to_lower(List)).
 
 sign(Data) ->
-    S = sign(Data, ?PRIVATE_TOKEN, 100),
+    S = sign(Data, ?PRIVATE_TOKEN, ?STRETCHES),
     bin2hex(S).
 
 sign(Data, _, 0)   -> Data;
