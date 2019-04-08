@@ -8,7 +8,14 @@ start(_StartType, _StartArgs) ->
     lager:start(),
     Dispatch = cowboy_router:compile([
         {'_', [
-            {"/hello/:format", default_handler, #{ module => hello_actions, action => hello }}
+            {   "/hello/:format",
+                default_handler,
+                #{ module => hello_actions, action => hello }
+            },
+            {   "/bye",
+                default_handler,
+                #{ module => hello_actions, action => bye }
+            }
         ]}
     ]),
     {ok, _} = cowboy:start_clear(

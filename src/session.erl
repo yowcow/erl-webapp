@@ -32,7 +32,11 @@ set_session(Req0, Cookies) ->
     Signature = sign(RawMsg),
     Msg = b64_urlsafe:encode(RawMsg),
     CookieData = <<Msg/binary, <<".">>/binary, Signature/binary>>,
-    cowboy_req:set_resp_cookie(?COOKIE_NAME, CookieData, Req0, #{http_only => true}).
+    cowboy_req:set_resp_cookie(?COOKIE_NAME, CookieData, Req0, #{
+        http_only => true,
+        domain => "",
+        path => "/"
+    }).
 
 get_session(Req) ->
     Cookies = cowboy_req:parse_cookies(Req),
