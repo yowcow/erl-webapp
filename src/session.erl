@@ -8,9 +8,13 @@
 -define(COOKIE_NAME, <<"sess">>).
 -define(PRIVATE_TOKEN, <<"HOGEHOGE-hogehoge">>). % should not be present.
 
+bin2hex(Bin) ->
+    List = lists:flatten([io_lib:format("~2.16.0B", [X]) || X <- binary_to_list(Bin)]),
+    list_to_binary(string:to_lower(List)).
+
 sign(Data) ->
     S = sign(Data, ?PRIVATE_TOKEN, 100),
-    b64_urlsafe:encode(S).
+    bin2hex(S).
 
 sign(Data, _, 0)   -> Data;
 sign(Data, Salt, N) ->
@@ -27,12 +31,12 @@ set_session(Req0, Cookies) ->
     Signature = sign(RawMsg),
     Msg = b64_urlsafe:encode(RawMsg),
     CookieData = <<Msg/binary, <<".">>/binary, Signature/binary>>,
-    cowboy_req:set_resp_cookie(?COOKIE_NAME, CookieData, Req0).
+    cowboy_req:set_resp_cookie(?COOKIE_NAME, CookieData, Req0, #{http_only => true}).
 
 get_session(Req) ->
     Cookies = cowboy_req:parse_cookies(Req),
     Verified = case proplists:get_value(?COOKIE_NAME, Cookies) of
-        undefined  -> undefined;
+        undefined  -> #{};
         CookieData -> verified_session(binary:split(CookieData, [<<".">>]))
     end,
     Verified.
@@ -49,6 +53,6 @@ verified_session([Msg, Signature]) ->
                 {ok, Data, _} ->
                     Data
             end;
-        _    -> undefined
+        _    -> #{}
     end;
-verified_session(_) -> undefined.
+verified_session(_) -> #{}.
