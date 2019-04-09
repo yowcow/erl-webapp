@@ -7,21 +7,13 @@
 
 -define(COOKIE_KEY, <<"count">>).
 
-hello(#{ bindings := Bindings } = Req, #{ cookies := Cookies }) ->
+hello(Req, #{ cookies := Cookies }) ->
     RemoteAddr = list_to_binary(request:remote_addr(Req)),
     #{ ?COOKIE_KEY := Count } = RespCookies = incr_count(Cookies),
-    {ContentType, Body} = case maps:get(format, Bindings) of
-        <<"json">> ->
-            response:json(#{
-                remote_addr => RemoteAddr,
-                count => Count
-            });
-        _ ->
-            response:html(#{
-                "remote_addr" => RemoteAddr,
-                "count" => Count
-            }, "hello.html")
-    end,
+    {ContentType, Body} = response:render(Req, #{
+        remote_addr => RemoteAddr,
+        count => Count
+    }, "hello.html"),
     {200, RespCookies, #{ <<"content-type">> => ContentType }, Body}.
 
 incr_count(#{ ?COOKIE_KEY := Count } = Cookies) ->
