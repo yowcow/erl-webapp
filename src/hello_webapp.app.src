@@ -2,12 +2,14 @@
  [{description, "An OTP application"},
   {vsn, "0.1.0"},
   {registered, []},
-  {mod, {hello_webapp_app, []}},
+  {mod, {hello_webapp, []}},
   {applications,
    [kernel,
     stdlib,
     cowboy,
-    lager
+    lager,
+    b64_urlsafe,
+    jsone
    ]},
   {env,[]},
   {modules, []},

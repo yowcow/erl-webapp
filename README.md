@@ -1,5 +1,5 @@
-My Introduction to Cowboy App
-=============================
+erl-webapp
+==========
 
 Build
 -----

@@ -1,4 +1,4 @@
--module(hello_webapp_app).
+-module(hello_webapp).
 
 -behaviour(application).
 
@@ -18,9 +18,10 @@ start(_StartType, _StartArgs) ->
             }
         ]}
     ]),
+    {ok, Port} = application:get_env(hello_webapp, port),
     {ok, _} = cowboy:start_clear(
         my_http_listener,
-        [{port, 8800}],
+        [{port, Port}],
         #{env => #{dispatch => Dispatch}}
     ),
     hello_webapp_sup:start_link().
