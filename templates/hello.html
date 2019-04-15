@@ -7,5 +7,18 @@
   <h1>Hello {{remote_addr}}</h1>
   <p>You have visited {{count}} times.</p>
   <p><a href="/bye">Bye</a></p>
+  <script>
+    const host = window.location.hostname;
+    const port = window.location.port;
+    const url = 'ws://' + host + ':' + port + '/ws';
+
+    const ws = new WebSocket(url);
+    ws.addEventListener('open', function (ev) {
+      ws.send('Hello server!');
+    });
+    ws.addEventListener('message', function (ev) {
+      console.log(ev.data);
+    });
+  </script>
 </body>
 </html>

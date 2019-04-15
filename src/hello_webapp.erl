@@ -15,6 +15,10 @@ start(_StartType, _StartArgs) ->
             {   "/bye",
                 default_handler,
                 #{ module => hello_actions, action => bye }
+            },
+            {   "/ws",
+                websocket_handler,
+                #{ module => hellows_actions }
             }
         ]}
     ]),
