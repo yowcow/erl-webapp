@@ -7,18 +7,46 @@
   <h1>Hello {{remote_addr}}</h1>
   <p>You have visited {{count}} times.</p>
   <p><a href="/bye">Bye</a></p>
+  <h2>Chat</h2>
+  <ul id="chat-list"></ul>
+  <form id="chat-form">
+    <input type="text" id="chat-input">
+    <button id="chat-btn">send</button>
+  </div>
   <script>
     const host = window.location.hostname;
     const port = window.location.port;
     const url = 'ws://' + host + ':' + port + '/ws';
 
+    const ul = document.querySelector('#chat-list');
+    const form = document.querySelector('#chat-form');
+    const input = document.querySelector('#chat-input');
+    const button = document.querySelector('#chat-btn');
+
+    const submit = function (ev) {
+      ev.preventDefault();
+      const text = input.value;
+      ws.send(text);
+      input.value = "";
+    };
+
     const ws = new WebSocket(url);
+
     ws.addEventListener('open', function (ev) {
       ws.send('Hello server!');
     });
-    ws.addEventListener('message', function (ev) {
-      console.log(ev.data);
+
+    ws.addEventListener('close', function (ev) {
+      form.removeEventListener('submit', submit);
     });
+
+    ws.addEventListener('message', function (ev) {
+      const li = document.createElement('li');
+      ul.appendChild(li);
+      li.textContent = ev.data;
+    });
+
+    form.addEventListener('submit', submit);
   </script>
 </body>
 </html>

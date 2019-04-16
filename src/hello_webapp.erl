@@ -6,6 +6,7 @@
 
 start(_StartType, _StartArgs) ->
     lager:start(),
+    websocket_manager:start(),
     Dispatch = cowboy_router:compile([
         {'_', [
             {   "/hello/:format",

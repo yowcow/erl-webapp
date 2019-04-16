@@ -7,10 +7,13 @@
     websocket_info/2
 ]).
 
+-define(IDLE_TIMEOUT, 5 * 60 * 1000).
+
 init(Req, State) ->
-    {cowboy_websocket, Req, State}.
+    {cowboy_websocket, Req, State, #{ idle_timeout => ?IDLE_TIMEOUT }}.
 
 websocket_init(#{ module := M } = State) ->
+    websocket_manager:join(),
     M:websocket_init(State).
 
 websocket_handle(Frame, #{ module := M } = State) ->
