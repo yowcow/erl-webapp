@@ -6,7 +6,7 @@
 ]).
 
 path_to(File) ->
-    list_to_binary(["./templates/", File]).
+    list_to_binary([hello_webapp:priv_dir(), "/", File]).
 
 render(File) ->
     render(File, #{}).
